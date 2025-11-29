@@ -55,10 +55,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/huggingfa
 ```bash
 git-xet --version
 ```
-### 2-3. 모델 클론
+### 2-3. 모델 SSH clone
 https://huggingface.co/google/gemma-3-1b-it-qat-q4_0-gguf
 ```bash
-git clone git@huggingface.co:google/gemma-3-1b-it-qat-gguf
+git clone git@hf.co:google/gemma-3-1b-it-qat-gguf
 ```
 
 <details> <summary> sudo, apt </summary>
@@ -150,4 +150,38 @@ cmake --build build --config Release -j2
 
 ```bash
 ./build/bin/llama-cli -h
+```
+
+<br>
+<br>
+
+## 4. GGUF 모델 llama.cpp로 실행
+```bash
+./build/bin/llama-cli \
+-m /home/jud1th/gemma-3-1b-it-qat-q4_0-gguf/gemma-3-1b-it-q4_0.gguf \
+-p "안녕하세요, 당신은 누구인가요?" \
+-n 128
+```
+- m : 모델 경로
+- p : 프롬프트
+- n : 생성 토큰 수
+
+![alt text](img/4.png)
+
+## 5. Gemma3 → ONNX 변환 및 ONNX Runtime 실행
+
+### ONNX
+- Open Neural Network Exchange
+- PyTorch, TensorFlow 등에서 학습된 모델을 프레임워크에 종속되지 않도록 변환해 범용적으로 실행할 수 있게 하는 표준 포맷
+
+### 5-1. GGUF가 아닌 PyTorch 기반 원본 모델 SSH Clone
+
+```bash
+git clone git@hf.co:google/gemma-3-1b-it
+```
+
+### 5-2. ONNX 변환 도구 설치
+- 나는 가상환경에서 진행했다. 
+```bash
+pip install optimum onnx onnxruntime onnxruntime-genai
 ```
